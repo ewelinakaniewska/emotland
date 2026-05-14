@@ -11,10 +11,10 @@ Interfejs zaprojektowany z myślą o minimalizowaniu bodźców, skupiający uwag
 | :---: | :---: |
 | ![Widok Rozdziałów](screenshots/chapters-view-child.png) | ![Zadanie Dziecka](screenshots/task-child.png) |
 
-### Panel Terapeuty - Kreator Treści
-Zaawansowany kreator pozwalający na dynamiczne budowanie struktury kursu (rozdziały, bloki, zadania).
+### Panel Terapeuty (Zarządzanie Treścią)
+Widok administracyjny pozwalający na przeglądanie, filtrowanie oraz zarządzanie bazą zadań edukacyjnych.
 
-![Kreator Rozdziałów](screenshots/chapter-creating.png)
+![Zarządzanie Zadaniami](screenshots/tasks-list.png)
 
 ## Architektura Systemu
 
