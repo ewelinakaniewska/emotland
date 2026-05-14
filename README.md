@@ -10,7 +10,7 @@
 
 Głównym innowacyjnym elementem systemu jest model uczenia maszynowego (sieci neuronowe) do rozpoznawania emocji na twarzy użytkownika w czasie rzeczywistym.
 
-## 🎯 Główne Role i Funkcjonalności
+## Główne Role i Funkcjonalności
 
 Aplikacja opiera się na trzech dedykowanych rolach, z których każda posiada odrębny zakres możliwości:
 
