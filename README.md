@@ -1,74 +1,74 @@
 # Emotland – Wsparcie Rozwoju Emocjonalnego Dzieci z ASD przy użyciu uczenia maszynowego 
 
+Kompleksowy system wspomagania terapii dzieci ze spektrum autyzmu, oparty na architekturze wielousługowej (multi-service), wykorzystujący sieci konwolucyjne (CNN) do analizy afektywnej w czasie rzeczywistym.
 
-> Projekt stworzony w celu wspierania terapii dzieci ze spektrum autyzmu poprzez innowacyjne podejście do nauki rozpoznawania emocji.
+## Architektura Systemu
 
----
+System został zaprojektowany w modelu klient-serwer z wyraźnym podziałem na odpowiedzialności (Separation of Concerns):
 
-## O projekcie
-**Emotland** to kompleksowa aplikacja edukacyjna zaprojektowana w celu wspierania nauki rozumienia i wyrażania emocji u dzieci z zaburzeniami ze spektrum autyzmu (ASD). System stanowi narzędzie wspomagające proces terapeutyczny, oferując stabilne, zorganizowane środowisko wizualne, wolne od nadmiaru bodźców.
-
-Głównym innowacyjnym elementem systemu jest model uczenia maszynowego (sieci neuronowe) do rozpoznawania emocji na twarzy użytkownika w czasie rzeczywistym.
-
-## Główne Role i Funkcjonalności
-
-Aplikacja opiera się na trzech dedykowanych rolach, z których każda posiada odrębny zakres możliwości:
-
-* **Dziecko:**
-    * Realizacja interaktywnych zadań pogrupowanych w bloki i rozdziały.
-    * **Tryb naśladowania emocji:** Wykorzystanie modelu rozpoznawania emocji wspierającego naukę.
-    * **Panel powtórek:** Możliwość ponownego podejścia do błędnie rozwiązanych zadań.
-    * Monitorowanie postępów i zdobywanie punktów.
-* **Rodzic:**
-    * Śledzenie historii i statystyk postępów dziecka w formie wykresów.
-    * Komunikacja z terapeutą za pomocą wbudowanego czatu.
-    * Dostęp do artykułów edukacyjnych i zarządzanie kontem dziecka.
-* **Terapeuta:**
-    * Tworzenie i edycja autorskich materiałów (zadania, bloki, rozdziały).
-    * Monitorowanie aktywności wielu podopiecznych i wystawianie komentarzy do prób.
-    * Publikowanie artykułów o tematyce ASD.
+1.  **Frontend (SPA):** React 19 zorientowany na komponenty, wykorzystujący Context API do zarządzania stanem globalnym.
+2.  **Główny Serwis API:** Node.js (Express) – serce systemu odpowiedzialne za komunikację między wszystkimi modułami, bezpieczeństwo (logowanie) oraz zarządzanie bazą danych.
+3.  **ML Inference Service:** Python (FastAPI) – osobny serwis odpowiedzialny za analizę obrazu z kamery i rozpoznawanie emocji użytkownika w czasie rzeczywistym.
+4.  **Baza Danych:** MongoDB – dokumentowa baza danych obsługująca dynamiczne struktury zadań i logi aktywności użytkowników.
 
 ## Stos Technologiczny
 
-System został zaprojektowany w architekturze klient-serwer z pełną konteneryzacją.
-
 ### Frontend
-* **React + Vite:** Budowa szybkiego i responsywnego interfejsu SPA.
-* **Socket.io-client:** Komunikacja w czasie rzeczywistym (czat).
+- **Framework:** React 19 (Vite)
+- **Stylizacja:** Tailwind CSS 4.0
+- **Zarządzanie stanem:** React Context API + Custom Hooks
+- **Komunikacja:** Axios + Custom Interceptors (obsługa sesji)
+- **Wizualizacja danych:** Recharts (analityka postępów terapeutycznych)
+- **Real-time:** Socket.io-client
 
-### Backend (Node.js & Python)
-* **Express.js:** Główna logika biznesowa, REST API oraz uwierzytelnianie.
-* **FastAPI (Python):** Serwer dedykowany do obsługi modelu przewidywania emocji.
-* **TensorFlow:** Silnik sieci neuronowej odpowiedzialny za rozpoznawanie emocji.
-* **Socket.io:** Serwer WebSocket do obsługi komunikacji natychmiastowej.
+### Backend (Node.js)
+- **Środowisko:** Node.js + Express.js
+- **Bezpieczeństwo:** JWT (Access & Refresh Tokens) w standardzie HttpOnly Cookies
+- **Komunikacja dwukierunkowa:** Socket.io (czat terapeuta-rodzic)
+- **ODM:** Mongoose
 
-### Baza Danych i Infrastruktura
-* **MongoDB:** Dokumentowa baza danych (NoSQL).
-* **Mongoose (ODM):** Modelowanie danych i walidacja po stronie backendu.
-* **Docker & Docker Compose:** Pełna konteneryzacja wszystkich warstw systemu.
-* **JWT (JSON Web Token):** Bezpieczne uwierzytelnianie z użyciem ciasteczek `HttpOnly`.
+### ML Inference Service (Python)
+- **Framework:** FastAPI
+- **Silnik ML:** TensorFlow / Keras (Model konwolucyjny CNN)
+- **Przetwarzanie obrazu:** OpenCV
+- **Protokół komunikacji:** REST API (Multipart/form-data)
 
-## Bezpieczeństwo
-* **Ochrona haseł:** Haszowanie algorytmem `bcrypt`.
-* **Zabezpieczenia NoSQL Injection:** Parametryzacja zapytań poprzez ODM Mongoose.
+## Kluczowe Implementacje Techniczne
 
-## Instalacja i Uruchomienie (Docker)
+### Zaawansowany Moduł Autoryzacji i Sesji
+Zastosowano mechanizmy zapewniające wysoki poziom bezpieczeństwa i UX:
+- **Dual Token Strategy:** Implementacja krótkoterminowych Access Tokenów i długoterminowych Refresh Tokenów.
+- **Axios Interceptors:** Automatyczne przechwytywanie błędów 401, kolejkowanie żądań (`pendingRequests`) i transparentne odświeżanie sesji bez przerywania pracy użytkownika.
+- **RBAC (Role-Based Access Control):** Granularne zarządzanie dostępem do zasobów (Dziecko / Rodzic / Terapeuta) na poziomie middleware i komponentów Higher-Order (HOC).
 
-Aplikacja jest gotowa do uruchomienia w środowisku kontenerowym:
+### Optymalizacja Potoku Przetwarzania ML
+- **Process Isolation:** Odizolowanie procesów uczenia maszynowego w dedykowanym serwisie FastAPI zapobiega blokowaniu pętli zdarzeń (Event Loop) głównego serwisu Node.js podczas operacji na macierzach.
+- **Model Architecture:** Wykorzystanie sieci CNN zoptymalizowanej pod kątem klasyfikacji 7 klas emocji, zaimplementowanej w środowisku asynchronicznym.
 
-1.  **Sklonuj repozytorium:**
-    ```bash
-    git clone [https://github.com/ewelinakaniewska/emotland.git](https://github.com/ewelinakaniewska/emotland.git)
-    cd emotland
-    ```
-2.  **Skonfiguruj zmienne środowiskowe:**
-    Stwórz plik `.env` w głównym katalogu na podstawie pliku `.env.example`.
-3.  **Uruchom system:**
-    ```bash
-    docker compose up --build
-    ```
-    System automatycznie uruchomi bazę danych, backend Node.js, moduł ML Python oraz frontend React.
+### Architektura Danych i Skalowalność
+- **Dynamic Task Engine:** Polimorficzna struktura zadań (Single Choice, ML Emotion Recognition) umożliwiająca terapeutom tworzenie spersonalizowanych ścieżek edukacyjnych.
+- **Analityka:** Implementacja złożonych agregacji MongoDB do generowania raportów wydajnościowych (skuteczność vs. czas reakcji dziecka).
+
+## Konteneryzacja i Orkiestracja
+
+Projekt wykorzystuje pełną konteneryzację, co zapewnia determinizm środowiska:
+
+- **Docker Compose:** Zarządzanie trzema kontenerami: `web-client`, `express-api` oraz `python-api`.
+- **Nginx:** Skonfigurowany jako Reverse Proxy, obsługujący routing ruchu, terminację zapytań i serwowanie zasobów statycznych.
+
+### Procedura uruchomienia:
+
+1.  Zdefiniuj zmienne środowiskowe w pliku `.env` na podstawie `.env.example`.
+2.  Zbuduj i uruchom infrastrukturę:
+```bash
+docker-compose up --build
+```
+## Modele Danych (Data Schema)
+
+- **User:** Hierarchiczne modelowanie użytkowników w oparciu o role (RBAC) z zachowaniem relacji nadrzędności i powiązań (Rodzic/Terapeuta — Dziecko).
+- **Task:** Abstrakcyjna definicja zadań wspierająca różne moduły logiczne, w tym moduł klasyfikacji wizyjnej oparty na uczeniu maszynowym.
+- **UserTask:** Dokumentacja sesji i każdej interakcji podopiecznego z systemem (wskaźniki trafności predykcji, metadane techniczne, szczegółowa analiza czasu reakcji).
 
 ---
-
-**Projekt inżynierski obroniony na ocenę 5.0 (tytuł inżyniera).**
+### Autor
+**Ewelina Kaniewska** *Projekt zrealizowany w ramach pracy inżynierskiej (Ocena: 5.0)*
