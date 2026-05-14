@@ -1,0 +1,44 @@
+services:
+  express-api:
+    build: ./server
+    container_name: backend_express
+    image: pracainynierska-express-api:latest
+    environment:
+      - PORT=5000
+      - MONGO_URI=${MONGO_URI}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - EMAIL_USER=${EMAIL_USER}
+      - EMAIL_PASS=${EMAIL_PASS}
+      - FRONTEND_URL=http://localhost
+    ports:
+      - "5000:5000"
+    volumes:
+      - images:/app/public/images
+    restart: always
+
+  python-api:
+    build: ./SERVER
+    container_name: backend_python
+    image: pracainynierska-python-api:latest
+    ports:
+      - "8000:8000"
+    restart: always
+
+  web-client:
+    build:
+      context: ./client
+      args:
+        - FRONTEND_URL=${FRONTEND_URL}
+        - VITE_API_URL=${VITE_API_URL}
+    container_name: frontend_react
+    image: pracainynierska-web-client:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - express-api
+      - python-api
+    restart: always
+
+volumes:
+  images:
