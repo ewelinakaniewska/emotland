@@ -2,6 +2,20 @@
 
 Kompleksowy system wspomagania terapii dzieci ze spektrum autyzmu, oparty na architekturze wielousługowej (multi-service), wykorzystujący sieci konwolucyjne (CNN) do analizy afektywnej w czasie rzeczywistym.
 
+## Podgląd Systemu
+
+### Panel Dziecka i Realizacja Zadań
+Interfejs zaprojektowany z myślą o minimalizowaniu bodźców, skupiający uwagę na zadaniu edukacyjnym.
+
+| Widok Rozdziałów | Rozwiązywanie zadania |
+| :---: | :---: |
+| ![Widok Rozdziałów](screenshots/chapters-view-child.png) | ![Zadanie Dziecka](screenshots/task-child.png) |
+
+### Panel Terapeuty - Kreator Treści
+Zaawansowany kreator pozwalający na dynamiczne budowanie struktury kursu (rozdziały, bloki, zadania).
+
+![Kreator Rozdziałów](screenshots/chapter-creating.png)
+
 ## Architektura Systemu
 
 System został zaprojektowany w modelu klient-serwer z wyraźnym podziałem na odpowiedzialności (Separation of Concerns):
