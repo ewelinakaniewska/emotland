@@ -7,7 +7,7 @@ Kompleksowy system wspomagania terapii dzieci ze spektrum autyzmu, oparty na arc
 ### Panel Dziecka i Realizacja Zadań
 Interfejs zaprojektowany z myślą o minimalizowaniu bodźców, skupiający uwagę na zadaniu edukacyjnym.
 
-| Widok Rozdziałów | Zadanie z Wykorzystaniem ML |
+| Widok Rozdziałów | Rozwiązywanie zadania |
 | :---: | :---: |
 | ![Widok Rozdziałów](screenshots/chapters-view-child.png) | ![Zadanie Dziecka](screenshots/task-child.png) |
 
